@@ -35,6 +35,7 @@ RUN \
     && wget -q -O - https://github.com/alerta/angular-alerta-webui/tarball/master | tar zxf - \
     && mv alerta-angular-alerta-webui-*/app /app \
     && rm -Rf /alerta-angular-alerta-webui-* \
+    && rm /app/config.js \
     && echo "from alerta.app import app" >/wsgi.py \
     && apk del deps
 
