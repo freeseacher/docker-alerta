@@ -13,6 +13,7 @@ angular.module('config', [])
     'endpoint'    : "${BASE_URL:-/api}",
     'provider'    : "${PROVIDER}",
     'client_id'   : "${CLIENT_ID}",
+    'gitlab_url' : "${GITLAB_URL}",
     'colors'      : {}
   });
 EOF
@@ -28,8 +29,10 @@ OAUTH2_CLIENT_ID = '${CLIENT_ID}'
 OAUTH2_CLIENT_SECRET = '${CLIENT_SECRET}'
 API_KEY_EXPIRE_DAYS = ${API_KEY_EXPIRE_DAYS:-365}
 ADMIN_USERS=["${ADMIN_USERS}"]
+ALLOWED_ENVIRONMENTS=[${ALLOWED_ENVIRONMENTS}]
 EOF
 fi
+
 
 # Install plugins
 echo -n "${PLUGINS:-reject}" | sed "s/,/\n/g;s/\[//g;s/\]//g;s/\'//g" | grep -v reject | while read plugin
