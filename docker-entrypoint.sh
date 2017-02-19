@@ -23,7 +23,7 @@ if [ ! -f "$ALERTA_SVR_CONF_FILE" ]; then
   cat >$ALERTA_SVR_CONF_FILE << EOF
 DEBUG = ${DEBUG:-False}
 BASE_URL = '${BASE_URL:-/api}'
-SECRET_KEY = ${SECRET_KEY:-$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -c 32)}
+SECRET_KEY = "${SECRET_KEY:-$(< /dev/urandom tr -dc A-Za-z0-9_\!\@\#\$\%\^\&\*\(\)-+= | head -c 32)}"
 OAUTH2_CLIENT_ID = '${CLIENT_ID}'
 OAUTH2_CLIENT_SECRET = '${CLIENT_SECRET}'
 API_KEY_EXPIRE_DAYS = ${API_KEY_EXPIRE_DAYS:-365}
