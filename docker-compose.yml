@@ -1,0 +1,48 @@
+version: '2.1'
+services:
+  alerta:
+    build: .
+    depends_on:
+      - db
+    environment:
+      - MONGO_URI=mongodb://db:27017/monitoring
+      - DEBUG=True
+      - SECRET_KEY=""
+      - AUTH_REQUIRED=True
+      - PLUGINS=['reject','telegram']
+      - ADMIN_USERS=""
+
+  housekeepingalerts:
+    build: .
+    restart: always
+    entrypoint: /scripts/housekeepingAlerts.sh
+    environment:
+      - HOUSEKEEPINGALERTS_TIMER=60
+
+  heartbeat:
+    build: .
+    restart: always
+    volumes:
+      - $PWD/config/alertad.conf:/etc/alertad.conf
+    entrypoint: /scripts/heartbeat.sh
+    environment:
+      - ALERTA_ENDPOINT=http://alerta:8080
+      - ALERTA_API_KEY=8j6nEo8x7bOInXQuHBP55FWckc9Mi-w1jIa-pQiZ
+      - HEARTBEAT_TIMER=60
+
+  db:
+    image: mongo:3.2
+    volumes:
+      - ./mongodb:/data/db
+    restart: always
+
+  nginx:
+    image: nginx:alpine
+    volumes:
+      - $PWD/config/nginx.conf:/etc/nginx/conf.d/alerta.conf
+    volumes_from:
+      - alerta
+    depends_on:
+      - alerta
+    ports:
+      - 0.0.0.0:8111:80
